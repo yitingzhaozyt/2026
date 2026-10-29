@@ -5,70 +5,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>我的 2026 复盘</title>
   <style>
-    :root { --bg: #fafaf8; --text: #222; --muted: #888; --line: #e2e2dd; --accent: #2b6cb0; }
+    :root { --bg: #fafaf8; --text: #222; --muted: #888; --line: #e2e2dd; --accent: #2b6cb0; --code: #f0f0ec; }
     @media (prefers-color-scheme: dark) {
-      :root { --bg: #1a1a1a; --text: #e6e6e6; --muted: #999; --line: #333; --accent: #7ab3ef; }
+      :root { --bg: #1a1a1a; --text: #e6e6e6; --muted: #999; --line: #333; --accent: #7ab3ef; --code: #262626; }
     }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; scroll-padding-top: 60px; }
     body { background: var(--bg); color: var(--text); margin: 0; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; line-height: 1.8; }
-    header, main { max-width: 720px; margin: 0 auto; padding: 0 20px; }
-    header { padding-top: 48px; }
-    h1 { margin: 0 0 4px; font-size: 1.8em; }
-    .updated { color: var(--muted); font-size: 0.9em; }
-    nav { position: sticky; top: 0; background: var(--bg); border-bottom: 1px solid var(--line); margin-top: 24px; z-index: 5; }
-    nav div { max-width: 720px; margin: 0 auto; padding: 10px 20px; display: flex; gap: 18px; flex-wrap: wrap; }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+    nav { position: sticky; top: 0; background: var(--bg); border-bottom: 1px solid var(--line); z-index: 5; }
+    nav .wrap { padding-top: 10px; padding-bottom: 10px; display: flex; gap: 18px; flex-wrap: wrap; }
     nav a { color: var(--accent); text-decoration: none; }
-    section { padding: 32px 0; border-bottom: 1px solid var(--line); }
-    h2 { margin-top: 0; }
-    footer { color: var(--muted); font-size: 0.85em; padding: 24px 0 48px; }
+    #content h1 { margin: 40px 0 4px; font-size: 1.8em; }
+    #content h2 { margin-top: 0; padding-top: 32px; border-top: 1px solid var(--line); }
+    #content h1 + p { color: var(--muted); margin-top: 0; }
+    #content img { max-width: 100%; }
+    #content blockquote { margin-left: 0; padding-left: 14px; border-left: 3px solid var(--line); color: var(--muted); }
+    #content code { background: var(--code); padding: 2px 5px; border-radius: 3px; }
+    #content a { color: var(--accent); }
+    footer { color: var(--muted); font-size: 0.85em; padding: 32px 0 48px; }
   </style>
 </head>
 <body>
+  <nav><div class="wrap" id="nav"></div></nav>
+  <main class="wrap"><div id="content">加载中…</div></main>
+  <footer><div class="wrap">写于 2026</div></footer>
 
-  <header>
-    <h1>我的 2026 复盘</h1>
-    <div class="updated">最后更新：2026-10-29</div>
-  </header>
-
-  <!-- 导航：新增板块时，在这里加一个链接，href 对应下面 section 的 id -->
-  <nav>
-    <div>
-      <a href="#work">工作</a>
-      <a href="#life">生活</a>
-      <a href="#learning">学习</a>
-      <a href="#next">2027 计划</a>
-    </div>
-  </nav>
-
-  <main>
-
-    <section id="work">
-      <h2>工作</h2>
-      <p>在这里写今年工作上的事。想到什么就加一段。</p>
-    </section>
-
-    <section id="life">
-      <h2>生活</h2>
-      <p>在这里写生活。</p>
-    </section>
-
-    <section id="learning">
-      <h2>学习</h2>
-      <p>在这里写学到的东西。</p>
-    </section>
-
-    <section id="next">
-      <h2>2027 计划</h2>
-      <p>在这里写明年想做的事。</p>
-    </section>
-
-    <!-- 想加新板块：复制上面任意一个 <section>...</section>，改 id 和标题，再去导航加链接 -->
-
-  </main>
-
-  <footer>
-    <div style="max-width:720px;margin:0 auto;padding:0 20px;">写于 2026</div>
-  </footer>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+  <script>
+    const box = document.getElementById('content');
+    fetch('content.md?t=' + Date.now())
+      .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
+      .then(md => {
+        box.innerHTML = marked.parse(md);
+        // 自动生成导航：每个二级标题（##）对应一个链接
+        const nav = document.getElementById('nav');
+        box.querySelectorAll('h2').forEach((h, i) => {
+          h.id = 'sec-' + i;
+          const a = document.createElement('a');
+          a.href = '#sec-' + i;
+          a.textContent = h.textContent;
+          nav.appendChild(a);
+        });
+        const h1 = box.querySelector('h1');
+        if (h1) document.title = h1.textContent;
+      })
+      .catch(() => {
+        box.textContent = '读取 content.md 失败。请确认它和 index.html 在同一目录；本地预览需要用本地服务器打开，不能直接双击 index.html。';
+      });
+  </script>
 </body>
 </html>
