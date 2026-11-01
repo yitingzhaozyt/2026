@@ -186,6 +186,11 @@ part1
 
 *免责声明：本文不代表投资建议。*
 
+[原文链接](https://mp.weixin.qq.com/s/SZe5XGzY7XPb_vQqoWxFiw)
+
+
+
+
 
 
 ## 《mikko - 黄金》 极度不看好，一定要生产性。
