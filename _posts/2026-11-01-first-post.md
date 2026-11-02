@@ -105,12 +105,6 @@ part1
 
 这里是被折叠的文本内容。
 
-- 列表项 1
-- 列表项 2
-
-</details>
-
-
 ## 《人为什么要买美股 - EM.0010》
 
 > **原创** 朱尘Mikko | 绎由的空中阁楼 | 2024年9月15日 10:01
@@ -201,7 +195,7 @@ part1
 [原文链接](https://mp.weixin.qq.com/s/SZe5XGzY7XPb_vQqoWxFiw)
 
 
-
+</details>
 
 
 
